@@ -4,18 +4,20 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 
-	"github.com/minmus/backend/activityPub"
 	"github.com/minmus/backend/general"
 	"github.com/minmus/backend/webfinger"
 )
 
 func main() {
-	activityPub.Main()
+	color.Blue("starting")
+	// activityPub.Main()
 
 	r := mux.NewRouter()
-	r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
+	// r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
+	r.NotFoundHandler = http.HandlerFunc(wrapper(general.Reflect))
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
 	r.HandleFunc("/test/", wrapper(general.Test))
@@ -33,7 +35,8 @@ func MyCustom404Handler(w http.ResponseWriter, r *http.Request) {
 func wrapper(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		// something else
-		fmt.Println(r)
+		// fmt.Println(r.URL.String())
+		color.Cyan(r.URL.String())
 
 		// origin funciton
 		handler(w, r)

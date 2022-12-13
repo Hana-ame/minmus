@@ -5,12 +5,14 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/minmus/backend/general"
 	"github.com/writeas/go-webfinger"
 )
 
 type resolver struct{}
 
 func (resolve *resolver) FindUser(username string, hostname, requestHost string, r []webfinger.Rel) (*webfinger.Resource, error) {
+	general.Test(nil, nil)
 	fmt.Println(username, hostname, requestHost, r)
 	return nil, nil
 }
