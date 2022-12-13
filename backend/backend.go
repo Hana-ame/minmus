@@ -1,12 +1,26 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+
+	"github.com/gorilla/mux"
+
+	"github.com/minmus/backend/activityPub"
+)
 
 func main() {
-	http.HandleFunc("/", nyaa)
-	http.ListenAndServe("127.0.8.1:8080", nil)
+	activityPub.Main()
+
+	r := mux.NewRouter()
+
+	r.HandleFunc("/", scope)
+	r.HandleFunc("/.well-known/webfinger", activityPub.Webfinger)
+	http.ListenAndServe("127.0.0.1:3001", r)
 }
-func nyaa(w http.ResponseWriter, r *http.Request) {
+
+func scope(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r)
 	w.Header().Add("key", "value")
 	w.WriteHeader(200)
 	w.Header().Add("keykeykeykey", "valuevaluevaluevalue")
