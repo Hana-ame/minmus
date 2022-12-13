@@ -5,25 +5,37 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/writeas/go-webfinger"
 
 	"github.com/minmus/backend/activityPub"
+	"github.com/minmus/backend/general"
+	"github.com/minmus/backend/webfinger"
 )
 
 func main() {
 	activityPub.Main()
 
 	r := mux.NewRouter()
+	r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
 
-	r.HandleFunc("/", scope)
-	r.HandleFunc(webfinger.WebFingerPath, activityPub.Webfinger())
+	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
+	r.HandleFunc("/test/", wrapper(general.Test))
 	http.ListenAndServe("127.0.0.1:3001", r)
 }
 
-func scope(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r)
+func MyCustom404Handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.String())
 	w.Header().Add("key", "value")
-	w.WriteHeader(200)
+	w.WriteHeader(404)
 	w.Header().Add("keykeykeykey", "valuevaluevaluevalue")
-	w.Write([]byte("hello\n"))
+	w.Write([]byte(r.URL.String()))
+}
+
+func wrapper(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		// something else
+		fmt.Println(r)
+
+		// origin funciton
+		handler(w, r)
+	}
 }
