@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/writeas/go-webfinger"
 
 	"github.com/minmus/backend/activityPub"
 )
@@ -15,7 +16,7 @@ func main() {
 	r := mux.NewRouter()
 
 	r.HandleFunc("/", scope)
-	r.HandleFunc("/.well-known/webfinger", activityPub.Webfinger)
+	r.HandleFunc(webfinger.WebFingerPath, activityPub.Webfinger())
 	http.ListenAndServe("127.0.0.1:3001", r)
 }
 

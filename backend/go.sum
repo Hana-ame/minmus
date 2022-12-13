@@ -1,2 +1,6 @@
+github.com/captncraig/cors v0.0.0-20190703115713-e80254a89df1 h1:AFSJaASPGYNbkUa5c8ZybrcW9pP3Cy7+z5dnpcc/qG8=
+github.com/captncraig/cors v0.0.0-20190703115713-e80254a89df1/go.mod h1:EIlIeMufZ8nqdUhnesledB15xLRl4wIJUppwDLPrdrQ=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
+github.com/writeas/go-webfinger v1.1.0 h1:MzNyt0ry/GMsRmJGftn2o9mPwqK1Q5MLdh4VuJCfb1Q=
+github.com/writeas/go-webfinger v1.1.0/go.mod h1:w2VxyRO/J5vfNjJHYVubsjUGHd3RLDoVciz0DE3ApOc=
