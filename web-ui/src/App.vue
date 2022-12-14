@@ -1,30 +1,35 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+
+  <el-row :gutter="20">
+    <el-col :span="8"><div class="grid-content ep-bg-purple" /></el-col>
+    <el-col :span="16"><div class="grid-content ep-bg-purple" /></el-col>
+  </el-row>
+  
 </template>
-
+<script>
+  // import { ElButton } from 'element-plus'
+  export default {
+    // components: { ElButton },
+  }
+</script>
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.el-row {
+  margin-bottom: 20px;
+}
+.el-row:last-child {
+  margin-bottom: 0;
+}
+.el-col {
+  border-radius: 4px;
 }
 
-nav {
-  padding: 30px;
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.ep-bg-purple{
+  background-color: purple;
+  height: 200px;
 }
 </style>
+
