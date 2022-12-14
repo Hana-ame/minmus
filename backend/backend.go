@@ -12,12 +12,14 @@ import (
 )
 
 func main() {
+	general.Client = &http.Client{}
+
 	color.Blue("starting")
 	// activityPub.Main()
 
 	r := mux.NewRouter()
 	// r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
-	r.NotFoundHandler = http.HandlerFunc(wrapper(general.Reflect))
+	r.NotFoundHandler = http.HandlerFunc(wrapper(general.Proxy))
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
 	r.HandleFunc("/test/", wrapper(general.Test))

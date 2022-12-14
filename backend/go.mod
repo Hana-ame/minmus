@@ -3,6 +3,7 @@ module github.com/minmus/backend
 go 1.19
 
 require (
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/captncraig/cors v0.0.0-20190703115713-e80254a89df1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
