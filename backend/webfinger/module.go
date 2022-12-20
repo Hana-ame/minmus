@@ -1,7 +1,7 @@
 package webfinger
 
 import (
-	"github.com/minmus/backend/general"
+	"../general"
 )
 
 // this username shall not contain @[domain]

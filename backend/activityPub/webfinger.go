@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/minmus/backend/general"
+	"../general"
 	"github.com/writeas/go-webfinger"
 )
 

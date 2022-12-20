@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/minmus/backend/general"
+	"../general"
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {
