@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"meromeromeiro.top/backend/general"
+	"github.com/hana-ame/backend/general"
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {
@@ -51,14 +51,10 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 
 	resource := getResource(username)
 	// fmt.Println(resource)
+	// 404 if username not exist
 	if resource == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
-	}
-
-	resource.Subject = strings.ReplaceAll(resource.Subject, "misskey.meromeromeiro.top", Domain)
-	for k := range resource.Links {
-		resource.Links[k].HRef = strings.ReplaceAll(resource.Links[k].HRef, "misskey.meromeromeiro.top", Domain)
 	}
 
 	data := general.Marshal(*resource)

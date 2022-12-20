@@ -1,4 +1,4 @@
-module meromeromeiro.top/backend
+module github.com/hana-ame/backend
 
 go 1.19
 
