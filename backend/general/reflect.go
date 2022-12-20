@@ -5,7 +5,6 @@ import (
 	"compress/gzip"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
@@ -45,7 +44,7 @@ func Reflect(w http.ResponseWriter, r *http.Request) {
 
 func newRequestFromRequest(r *http.Request) *http.Request {
 	color.Yellow("https://misskey.meromeromeiro.top" + r.RequestURI)
-	text, err := ioutil.ReadAll(r.Body)
+	text, err := io.ReadAll(r.Body)
 	if err != nil {
 		color.Red(err.Error())
 		return nil
@@ -81,7 +80,7 @@ func writeResposeToResponseWriter(w http.ResponseWriter, r *http.Response) {
 
 	body := getPlainTextReader(r.Body, r.Header.Get("Content-Encoding"))
 	// w.Header().Set("Content-Encoding", "plain")
-	text, err := ioutil.ReadAll(body)
+	text, err := io.ReadAll(body)
 	if err != nil {
 		color.Red(err.Error())
 		return

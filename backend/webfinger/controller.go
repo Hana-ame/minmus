@@ -9,7 +9,7 @@ import (
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {
-	debug := true
+	debug := false
 
 	if debug {
 		fmt.Println(r.URL.Path)
@@ -20,6 +20,7 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(query)
 	}
 
+	// 400 if the form mismatch
 	if query["resource"] == nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -29,19 +30,27 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(resources)
 	}
 
+	// 400 if the form mismatch
 	if len(resources) != 1 || !strings.HasPrefix(resources[0], "acct:") {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
+	// 422 if domain not match
 	username, domain := resolveAcct(resources[0])
 	if domain != Domain {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
 	}
 
-	resource := mockGet(username)
-	fmt.Println(resource)
+	// 404 if username not exist
+	if !isExist(username) {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	resource := getResource(username)
+	// fmt.Println(resource)
 	if resource == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return

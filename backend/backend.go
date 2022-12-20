@@ -11,6 +11,8 @@ import (
 	"github.com/minmus/backend/webfinger"
 )
 
+var Domain string = "test.meromeromeiro.top"
+
 func main() {
 	general.Client = &http.Client{}
 
