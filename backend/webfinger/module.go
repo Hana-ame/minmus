@@ -1,7 +1,7 @@
 package webfinger
 
 import (
-	"../general"
+	"meromeromeiro.top/backend/general"
 )
 
 // this username shall not contain @[domain]

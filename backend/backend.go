@@ -7,8 +7,8 @@ import (
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 
-	"./general"
-	"./webfinger"
+	"meromeromeiro.top/backend/general"
+	"meromeromeiro.top/backend/webfinger"
 )
 
 var Domain string = "test.meromeromeiro.top"

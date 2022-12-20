@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
-	"../general"
 	"github.com/writeas/go-webfinger"
+	"meromeromeiro.top/backend/general"
 )
 
 type resolver struct{}

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"../general"
+	"meromeromeiro.top/backend/general"
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {

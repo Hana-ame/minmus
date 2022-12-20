@@ -1,4 +1,4 @@
-module backend
+module meromeromeiro.top/backend
 
 go 1.19
 
