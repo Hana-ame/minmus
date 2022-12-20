@@ -1,7 +1,9 @@
 *.zip
 *.exe
 note.md
+playground
 
 ddns
 *.py
 desktop.ini
+*.json
