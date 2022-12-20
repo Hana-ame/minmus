@@ -1,4 +1,4 @@
-module github.com/hana-ame/backend
+module github.com/hana-ame/minmus
 
 go 1.19
 

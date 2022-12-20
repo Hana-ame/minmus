@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/hana-ame/backend/general"
+	"github.com/hana-ame/minmus/backend/general"
 	"github.com/writeas/go-webfinger"
 )
 

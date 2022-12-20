@@ -2,7 +2,7 @@ package webfinger
 
 import (
 	"fmt"
-	"github.com/hana-ame/backend/general"
+	"github.com/hana-ame/minmus/backend/general"
 	"strings"
 )
 
