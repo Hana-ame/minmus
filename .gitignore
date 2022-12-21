@@ -4,6 +4,7 @@
 *.py
 *.json
 *.txt
+*.pem
 desktop.ini
 
 note.md
