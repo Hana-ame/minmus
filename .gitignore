@@ -3,6 +3,7 @@
 *.exe~
 *.py
 *.json
+*.txt
 desktop.ini
 
 note.md

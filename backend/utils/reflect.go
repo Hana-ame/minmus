@@ -1,4 +1,4 @@
-package general
+package utils
 
 import (
 	"bytes"
@@ -15,6 +15,7 @@ import (
 
 var Client *http.Client
 
+// helper functions for scope what happened
 func Proxy(w http.ResponseWriter, r *http.Request) {
 	// color.Green(fmt.Sprintln(r))
 
@@ -30,18 +31,6 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func Reflect(w http.ResponseWriter, r *http.Request) {
-	color.Green(fmt.Sprintln(r))
-
-	url := "https://misskey.meromeromeiro.top" + r.URL.String()
-	// url := strings.ReplaceAll(r.URL.String(), "test.meromeromeiro.top", "misskey.meromeromeiro.top")
-	color.Cyan("Get " + url)
-
-	data := Get(url)
-
-	w.Write(data)
-}
-
 func newRequestFromRequest(r *http.Request) *http.Request {
 	color.Yellow("https://misskey.meromeromeiro.top" + r.RequestURI)
 	text, err := io.ReadAll(r.Body)
@@ -49,9 +38,12 @@ func newRequestFromRequest(r *http.Request) *http.Request {
 		color.Red(err.Error())
 		return nil
 	}
-	newTxt := strings.ReplaceAll(string(text), "misskey.meromeromeiro.top", "test.meromeromeiro.top")
+	newTxt := strings.ReplaceAll(string(text), "misskey.meromeromeiro.top", "temp.meromeromeiro.top")
+	newTxt = strings.ReplaceAll(string(newTxt), "test.meromeromeiro.top", "misskey.meromeromeiro.top")
+	newTxt = strings.ReplaceAll(string(newTxt), "temp.meromeromeiro.top", "test.meromeromeiro.top")
 
-	color.Yellow(newTxt)
+	color.Yellow(string(text))
+	color.Yellow(string(newTxt))
 
 	req, err := http.NewRequest(r.Method, "https://misskey.meromeromeiro.top"+r.RequestURI, bytes.NewReader([]byte(newTxt)))
 

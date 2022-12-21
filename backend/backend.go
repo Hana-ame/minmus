@@ -7,24 +7,28 @@ import (
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 
-	"github.com/hana-ame/minmus/backend/general"
+	"github.com/hana-ame/minmus/backend/activityPub"
+	"github.com/hana-ame/minmus/backend/utils"
 	"github.com/hana-ame/minmus/backend/webfinger"
 )
 
 var Domain string = "test.meromeromeiro.top"
 
 func main() {
-	general.Client = &http.Client{}
+	utils.Client = &http.Client{}
 
 	color.Blue("starting")
 	// activityPub.Main()
 
 	r := mux.NewRouter()
 	// r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
-	r.NotFoundHandler = http.HandlerFunc(wrapper(general.Proxy))
+	r.NotFoundHandler = http.HandlerFunc(wrapper(utils.Proxy))
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
-	r.HandleFunc("/test/", wrapper(general.Test))
+	// r.HandleFunc(activityPub.UsersPath, wrapper(activityPub.Users))
+	activityPub.RegisterHandlerFunc(r)
+
+	// r.HandleFunc("/test/", wrapper(utils.Test))
 	http.ListenAndServe("127.0.0.1:3001", r)
 }
 

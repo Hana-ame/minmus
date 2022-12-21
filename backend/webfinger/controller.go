@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/hana-ame/minmus/backend/general"
+	"github.com/hana-ame/minmus/backend/utils"
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {
@@ -57,7 +57,7 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := general.Marshal(*resource)
+	data := utils.Marshal(*resource)
 
 	// return
 
