@@ -7,7 +7,6 @@ import (
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 
-	"github.com/hana-ame/minmus/backend/activityPub"
 	"github.com/hana-ame/minmus/backend/utils"
 	"github.com/hana-ame/minmus/backend/webfinger"
 )
@@ -21,14 +20,15 @@ func main() {
 	// activityPub.Main()
 
 	r := mux.NewRouter()
-	// r.NotFoundHandler = http.HandlerFunc(MyCustom404Handler)
 	r.NotFoundHandler = http.HandlerFunc(wrapper(utils.Proxy))
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
-	// r.HandleFunc(activityPub.UsersPath, wrapper(activityPub.Users))
-	activityPub.RegisterHandlerFunc(r)
 
-	// r.HandleFunc("/test/", wrapper(utils.Test))
+	// activityPub.RegisterHandlerFunc(r)
+
+	r.HandleFunc("/test/", wrapper(utils.Test))
+	r.HandleFunc("/users/{username}/inbox", wrapper(utils.Test))
+
 	http.ListenAndServe("127.0.0.1:3001", r)
 }
 

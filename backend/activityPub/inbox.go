@@ -1,21 +1,26 @@
 package activityPub
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/hana-ame/minmus/backend/utils"
+	"github.com/gorilla/mux"
 )
 
 // /{username}/inbox
 // /{username}/inbox/
 func Inbox(w http.ResponseWriter, r *http.Request) {
-	pk, err := utils.ReadKeyFromFile("privatekey.pem")
-	if err != nil {
-		fmt.Println(err.Error())
-		return
+	vars := mux.Vars(r)
+	username, ok := vars["username"]
+	if !ok {
+		w.WriteHeader(http.StatusInternalServerError)
 	}
-	fmt.Println(pk)
+	_ = username
+	// pk, err := utils.ReadKeyFromFile("privatekey.pem")
+	// if err != nil {
+	// 	fmt.Println(err.Error())
+	// 	return
+	// }
+	// fmt.Println(pk)
 	// key := utils.GenerateKey("")
 	// color.HiMagenta(fmt.Sprintf("%s", *key))
 	// keyBytes := utils.MarshalPublicKey(key)

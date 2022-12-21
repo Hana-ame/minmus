@@ -21,8 +21,8 @@ func RegisterHandlerFunc(r *mux.Router) {
 	r.HandleFunc("/users/{username}/", Users)
 
 	// Inbox
-	r.HandleFunc("/users/{username}/inbox", Inbox)
-	r.HandleFunc("/users/{username}/inbox/", Inbox)
+	// r.HandleFunc("/users/{username}/inbox", Inbox)
+	// r.HandleFunc("/users/{username}/inbox/", Inbox)
 }
 
 // func

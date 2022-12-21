@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
 	"crypto/x509"
@@ -123,4 +124,22 @@ func readKeyFromFile(path string) (*rsa.PrivateKey, error) {
 		}
 		return privateKey, nil
 	}
+}
+
+func CreateSig(message []byte, pk *rsa.PrivateKey) ([]byte, error) {
+	// hashed := sha256.Sum256(message)
+	signature, err := rsa.SignPKCS1v15(rand.Reader, pk, crypto.SHA256, message[:])
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error from signing: %s\n", err)
+		return nil, err
+	}
+	return signature, nil
+}
+
+func CheckSig(message []byte, signature string, pk *rsa.PublicKey) bool {
+	return false
+}
+
+func FormMessage(keyId, algorithm string, headers, params []string) []byte {
+
 }
