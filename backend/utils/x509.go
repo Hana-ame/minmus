@@ -141,5 +141,5 @@ func CheckSig(message []byte, signature string, pk *rsa.PublicKey) bool {
 }
 
 func FormMessage(keyId, algorithm string, headers, params []string) []byte {
-
+	return nil
 }

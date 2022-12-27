@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// NOT　TESTED
 // every time put a new value into the map, check the key that expires.
 // if the key expires, delete the value from the map.
 type Cache struct {
@@ -101,4 +102,19 @@ func (cache *Cache) Put(key string, value any) bool {
 	cache.addFirst(key, value)
 	cache.trim()
 	return true
+}
+
+type ListInMem struct {
+	sync.RWMutex
+}
+
+func NewListInMem() *ListInMem {
+	return &ListInMem{
+		RWMutex: sync.RWMutex{},
+	}
+}
+
+func (l *ListInMem) copy() {
+
+	// copy(nil, nil)
 }
