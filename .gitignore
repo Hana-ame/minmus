@@ -1,7 +1,7 @@
 *.zip
 *.exe
 *.exe~
-*.py
+# *.py
 *.json
 *.txt
 *.pem
