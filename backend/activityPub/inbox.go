@@ -1,20 +1,27 @@
 package activityPub
 
 import (
+	"fmt"
 	"net/http"
 
+	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 )
 
 // /{username}/inbox
 // /{username}/inbox/
 func Inbox(w http.ResponseWriter, r *http.Request) {
+	color.Green(fmt.Sprint(r))
+
 	vars := mux.Vars(r)
 	username, ok := vars["username"]
 	if !ok {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 	_ = username
+
+	err := verify(r)
+	fmt.Println(err)
 	// pk, err := utils.ReadKeyFromFile("privatekey.pem")
 	// if err != nil {
 	// 	fmt.Println(err.Error())
