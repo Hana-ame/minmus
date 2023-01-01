@@ -13,7 +13,7 @@ func TestGenPem(t *testing.T) {
 func TestGenPemAndSave(t *testing.T) {
 	pk := GenerateKey()
 	// fmt.Println(pk)
-	pubK := MarshalPublicKey(pk)
+	pubK := MarshalPublicKey(&pk.PublicKey)
 	fmt.Println(string(pubK))
 	// fmt.Println(pk)
 }

@@ -5,11 +5,11 @@ import (
 )
 
 type User struct {
-	ID        int64 `gorm:"primaryKey"`
+	ID        int64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	// me / me@other.site
-	Username string
+	Username string `gorm:"primaryKey"`
 	//
 	Email string
 	// sha256 hashed password
@@ -38,7 +38,7 @@ type User struct {
 }
 
 type UserAS struct {
-	ID        int64 `gorm:"primaryKey"`
+	ID        int64
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	// me / me@other.site
@@ -64,7 +64,7 @@ type UserAS struct {
 	ManuallyApprovesFollowers bool
 }
 
-// MUST and ONLY have Username, which should never be changed
+// MUST and ONLY have Username(which is PrimaryKey), which should never be changed
 func CheckUser(user *User) (bool, error) {
 	tx := db.Begin()
 	defer func() {

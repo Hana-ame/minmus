@@ -23,7 +23,7 @@ func TestCheckwhy(t *testing.T) {
 		fmt.Println("!!!", err)
 	}
 
-	if err := tx.Where("username = ?", "test").First(&user).Error; err != nil {
+	if err := tx.First(&user).Error; err != nil {
 		fmt.Println("!!!", err)
 		tx.Rollback()
 	}
