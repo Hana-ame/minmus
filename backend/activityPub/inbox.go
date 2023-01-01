@@ -12,6 +12,7 @@ import (
 // /{username}/inbox/
 func Inbox(w http.ResponseWriter, r *http.Request) {
 	color.Green(fmt.Sprint(r))
+	r.Host = Domain
 
 	vars := mux.Vars(r)
 	username, ok := vars["username"]
