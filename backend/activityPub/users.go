@@ -60,6 +60,17 @@ func dummyPerson(username string) activityStream {
 		"sharedInbox": getSharedInbox(Domain),
 	}
 
+	as["url"] = getURL(Domain, username)
+	// dummy
+	as["preferredUsername"] = "username"
+	as["name"] = nil
+	as["summary"] = nil
+	as["icon"] = nil
+	as["image"] = nil
+	as["tag"] = []string{}
+	as["manuallyApprovesFollowers"] = false
+	as["publicKey"] = getPublicKey(Domain, username)
+
 	return as
 }
 
@@ -84,5 +95,15 @@ func getFeatured(domain string, username string) string {
 func getSharedInbox(domain string) string {
 	return fmt.Sprintf("https://%s/inbox", Domain)
 }
+func getURL(domain string, username string) string {
+	return fmt.Sprintf("https://%s/@%s", Domain, username)
+}
+func getPublicKey(domain string, username string) activityStream {
+	as := make(activityStream, 0)
 
-// fmt.Sprintf("https://%s/@%s", Domain, username),
+	as["id"] = getID(domain, username) + "#main-key"
+	as["type"] = "Key"
+	as["owner"] = getID(domain, username)
+
+	return as
+}

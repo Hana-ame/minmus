@@ -14,6 +14,8 @@ import (
 	"github.com/fatih/color"
 )
 
+var RSABits = 1024
+
 // not used
 // var fakeSalt = "meiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiromeiro"
 
@@ -59,7 +61,7 @@ func ParsePrivateKey(privateKey string) (*rsa.PrivateKey, error) {
 
 // create a new private key
 func GenerateKey() *rsa.PrivateKey {
-	privateKey, err := rsa.GenerateKey(rand.Reader, 512)
+	privateKey, err := rsa.GenerateKey(rand.Reader, RSABits)
 	if err != nil {
 		color.Red(err.Error())
 	}
@@ -67,8 +69,8 @@ func GenerateKey() *rsa.PrivateKey {
 }
 
 // marshal public key to pem format
-func MarshalPublicKey(privateKey *rsa.PrivateKey) []byte {
-	bytes, err := x509.MarshalPKIXPublicKey(&privateKey.PublicKey)
+func MarshalPublicKey(publicKey *rsa.PublicKey) []byte {
+	bytes, err := x509.MarshalPKIXPublicKey(publicKey)
 	if err != nil {
 		color.Red(err.Error())
 		return nil
