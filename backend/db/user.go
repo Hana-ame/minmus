@@ -77,7 +77,7 @@ func CheckUser(user *User) (bool, error) {
 		return false, err
 	}
 
-	if err := tx.Where("username = ?", user.Username).Find(user).Error; err != nil {
+	if err := tx.First(user).Error; err != nil {
 		tx.Rollback()
 		return false, err
 	}
@@ -105,8 +105,65 @@ func CreateUser(user *User) error {
 	return tx.Commit().Error
 }
 
-func QueryUser(username string) (*User, error) {
-	var user User
-	db.First(&user, "username = ?", username) //
-	return &user, nil
+// should have only username(primary key). user returned is same as input.
+func QueryUser(user *User) (*User, error) {
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return user, err
+	}
+
+	if err := tx.First(user).Error; err != nil {
+		tx.Rollback()
+		return user, err
+	}
+
+	return user, tx.Commit().Error
+}
+
+// UpdateUser, use username to extinguish.
+func UpdateUser(user *User) error {
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := tx.Save(user).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// silent while username does not exist.
+func DeleteUser(user *User) error {
+	tx := db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	if err := tx.Error; err != nil {
+		return err
+	}
+
+	if err := tx.Delete(user).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
