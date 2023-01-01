@@ -15,7 +15,7 @@ func isExist(username string) bool {
 }
 
 func getResource(username string) *Resource {
-	return mockGet(username)
+	// return mockGet(username)
 
 	// TODO: sould connect to database to find Aliases
 	self := &Link{
@@ -23,11 +23,13 @@ func getResource(username string) *Resource {
 		Type: "application/activity+json",
 		HRef: fmt.Sprintf("https://%s/users/%s", Domain, username),
 	}
+	// porfile
 	profilePage := &Link{
 		Rel:  "http://webfinger.net/rel/profile-page",
 		Type: "text/html",
 		HRef: fmt.Sprintf("https://%s/@%s", Domain, username),
 	}
+	// what's this used for?
 	subscribe := &Link{
 		Rel:      "http://ostatus.org/schema/1.0/subscribe",
 		Template: fmt.Sprintf("https://%s/authorize-follow?acct={uri}", Domain),

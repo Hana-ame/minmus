@@ -2,10 +2,12 @@ package activityPub
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/hana-ame/minmus/backend/db"
 	"github.com/hana-ame/minmus/backend/utils"
 )
 
@@ -46,6 +48,14 @@ func GetPerson(username string) activityStream {
 }
 
 func dummyPerson(username string) activityStream {
+	// user := &db.User{
+	// 	Username: "dummy",
+	// }
+	// _, err := db.QueryUser(user)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
 	as := make(activityStream, 0)
 	as["@context"] = []string{"https://www.w3.org/ns/activitystreams", "https://w3id.org/security/v1"}
 	as["type"] = "Person"
@@ -99,11 +109,21 @@ func getURL(domain string, username string) string {
 	return fmt.Sprintf("https://%s/@%s", Domain, username)
 }
 func getPublicKey(domain string, username string) activityStream {
+
+	user := &db.User{
+		Username: "dummy",
+	}
+	_, err := db.QueryUser(user)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	as := make(activityStream, 0)
 
 	as["id"] = getID(domain, username) + "#main-key"
 	as["type"] = "Key"
 	as["owner"] = getID(domain, username)
+	as["publicKeyPem"] = user.PublicKeyPem
 
 	return as
 }

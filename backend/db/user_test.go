@@ -105,7 +105,6 @@ func TestUserAll(t *testing.T) {
 
 }
 
-/*
 func TestDelete(t *testing.T) {
 	var err error
 	var user *User
@@ -182,7 +181,7 @@ func TestCreate(t *testing.T) {
 	user := &User{
 		ID:           utils.GetTS(),
 		CreatedAt:    time.Now(),
-		Username:     "username123",
+		Username:     "dummy",
 		Email:        "sb@a.b",
 		PasswordHash: "password123",
 		// PasswordHash:  utils.Sha256String("password123"),
@@ -200,4 +199,3 @@ func TestCreate(t *testing.T) {
 	db.Create(user)
 
 }
-*/

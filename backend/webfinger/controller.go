@@ -22,7 +22,7 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 
 	// 400 if the form mismatch
 	if query["resource"] == nil {
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 	resources := query["resource"]
@@ -32,20 +32,20 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 
 	// 400 if the form mismatch
 	if len(resources) != 1 || !strings.HasPrefix(resources[0], "acct:") {
-		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 
 	// 422 if domain not match
 	username, domain := resolveAcct(resources[0])
 	if domain != Domain {
-		w.WriteHeader(http.StatusUnprocessableEntity)
+		http.Error(w, http.StatusText(http.StatusUnprocessableEntity), http.StatusUnprocessableEntity)
 		return
 	}
 
 	// 404 if username not exist
 	if !isExist(username) {
-		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 
@@ -53,16 +53,18 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println(resource)
 	// 404 if username not exist
 	if resource == nil {
-		w.WriteHeader(http.StatusNotFound)
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 
 	data := utils.Marshal(*resource)
 
 	// return
-
+	w.Header().Set("content-type", "application/jrd+json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.WriteHeader(200)
+	w.Header().Set("Access-Control-Allow-Headers", "Accept")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
+	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
 

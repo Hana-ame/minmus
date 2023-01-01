@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/fatih/color"
@@ -20,7 +19,7 @@ func main() {
 	// activityPub.Main()
 
 	r := mux.NewRouter()
-	r.NotFoundHandler = http.HandlerFunc(wrapper(utils.Proxy))
+	r.NotFoundHandler = http.HandlerFunc(wrapper(MyCustom404Handler))
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
 
@@ -33,11 +32,12 @@ func main() {
 }
 
 func MyCustom404Handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println(r.URL.String())
-	w.Header().Add("key", "value")
-	w.WriteHeader(404)
-	w.Header().Add("keykeykeykey", "valuevaluevaluevalue")
-	w.Write([]byte(r.URL.String()))
+	http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+	// fmt.Println(r.URL.String())
+	// w.Header().Add("key", "value")
+	// w.WriteHeader(404)
+	// w.Header().Add("keykeykeykey", "valuevaluevaluevalue")
+	// w.Write([]byte(r.URL.String()))
 }
 
 func wrapper(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {
