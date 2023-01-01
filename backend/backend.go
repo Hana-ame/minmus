@@ -1,18 +1,28 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
 
+	"github.com/hana-ame/minmus/backend/activityPub"
+	"github.com/hana-ame/minmus/backend/db"
 	"github.com/hana-ame/minmus/backend/utils"
 	"github.com/hana-ame/minmus/backend/webfinger"
 )
 
-var Domain string = "test.meromeromeiro.top"
+var Domain string = "meiro.meromeromeiro.top"
 
 func main() {
+
+	activityPub.Domain = Domain
+	webfinger.Domain = Domain
+
+	db.InitDB()
+
 	utils.Client = &http.Client{}
 
 	color.Blue("starting")
@@ -23,21 +33,23 @@ func main() {
 
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
 
-	// activityPub.RegisterHandlerFunc(r)
+	activityPub.RegisterHandlerFunc(r)
 
 	r.HandleFunc("/test/", wrapper(utils.Test))
-	r.HandleFunc("/users/{username}/inbox", wrapper(utils.Test))
+	// r.HandleFunc("/users/{username}/inbox", wrapper(utils.Test))
 
 	http.ListenAndServe("127.0.0.1:3001", r)
 }
 
 func MyCustom404Handler(w http.ResponseWriter, r *http.Request) {
 	http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
-	// fmt.Println(r.URL.String())
-	// w.Header().Add("key", "value")
-	// w.WriteHeader(404)
-	// w.Header().Add("keykeykeykey", "valuevaluevaluevalue")
-	// w.Write([]byte(r.URL.String()))
+	color.Green(fmt.Sprint(r))
+	text, err := io.ReadAll(r.Body)
+	if err != nil {
+		color.Red(err.Error())
+		return
+	}
+	color.Yellow(string(text))
 }
 
 func wrapper(handler func(w http.ResponseWriter, r *http.Request)) func(w http.ResponseWriter, r *http.Request) {

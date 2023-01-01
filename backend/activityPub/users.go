@@ -14,6 +14,7 @@ import (
 // /users/{username}/
 // /users/{username}
 func Users(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("???")
 	vars := mux.Vars(r)
 	username, ok := vars["username"]
 	if !ok {
@@ -38,6 +39,7 @@ func Users(w http.ResponseWriter, r *http.Request) {
 
 	data := utils.Marshal(person)
 
+	w.Header().Set("Content-Type", "application/activity+json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write(data)
 }
@@ -81,6 +83,7 @@ func dummyPerson(username string) activityStream {
 	as["manuallyApprovesFollowers"] = false
 	as["publicKey"] = getPublicKey(Domain, username)
 
+	// fmt.Println(as)
 	return as
 }
 
