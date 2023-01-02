@@ -27,6 +27,7 @@ func verify(r *http.Request) error {
 	return verifier.Verify(pubKey, algo)
 }
 
+// should be rewrite, visit local db first
 func getPublicKeyById(pubKeyId string) (*rsa.PublicKey, error) {
 	req, err := http.NewRequest("GET", pubKeyId, nil)
 	if err != nil {

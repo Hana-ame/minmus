@@ -26,6 +26,10 @@ type User struct {
 	Featured    string `gorm:"type:varchar(512)"`
 	SharedInbox string `gorm:"type:varchar(512)"`
 
+	// counts
+	FollowersCount int `gorm:"type:int"`
+	FollowingCount int `gorm:"type:int"`
+
 	// public key, all
 	PublicKeyID  string `gorm:"type:varchar(512)"`
 	PublicKeyPem string `gorm:"type:varchar(2048)"`
@@ -45,33 +49,6 @@ type User struct {
 	TagString string `gorm:"type:varchar(512)"`
 
 	// settings, all
-	ManuallyApprovesFollowers bool
-}
-
-type UserAS struct {
-	ID        int64
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	// me / me@other.site
-	Username string
-	// public key
-	PublicKeyPem string
-
-	// user infos
-	// prefered name
-	PreferredUsername string
-	// display name
-	Name string
-	// summary
-	Summary string
-	// URL to pic
-	Icon string
-	// URL to pic
-	Image string
-	// Marshaled json string
-	TagString string
-
-	// settings
 	ManuallyApprovesFollowers bool
 }
 
