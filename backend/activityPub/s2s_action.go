@@ -113,9 +113,9 @@ func getUserFromActivityStream(m map[string]any) (*db.User, error) {
 	if !ok {
 		return nil, fmt.Errorf("user following is not string")
 	}
-	freatured, ok := m["freatured"].(string)
+	featured, ok := m["featured"].(string)
 	if !ok {
-		return nil, fmt.Errorf("user freatured is not string")
+		return nil, fmt.Errorf("user featured is not string")
 	}
 	sharedInbox, ok := m["sharedInbox"].(string)
 	if !ok {
@@ -141,7 +141,7 @@ func getUserFromActivityStream(m map[string]any) (*db.User, error) {
 	}
 	name, ok := m["name"].(string)
 	if !ok {
-		return nil, fmt.Errorf("user name is not string")
+		// return nil, fmt.Errorf("user name is not string")
 	}
 	summary, ok := m["summary"].(string)
 	if !ok {
@@ -180,7 +180,7 @@ func getUserFromActivityStream(m map[string]any) (*db.User, error) {
 		Outbox:      outbox,
 		Followers:   followers,
 		Following:   following,
-		Featured:    freatured,
+		Featured:    featured,
 		SharedInbox: sharedInbox,
 		// public key
 		PublicKeyID:  publicKeyID,

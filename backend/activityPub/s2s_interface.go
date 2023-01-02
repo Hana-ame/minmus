@@ -1,6 +1,7 @@
 package activityPub
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -8,7 +9,6 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/gorilla/mux"
-	"github.com/hana-ame/minmus/backend/utils"
 )
 
 // /users/{username}/
@@ -26,13 +26,24 @@ func Users(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, fmt.Sprintf("https://%s/@%s", Domain, username), http.StatusFound)
 	}
 
-	// get user (type Person)
-	person := GetPerson(username)
-	if person == nil {
+	// get user (type *db.User)
+	user, err := getLocalUserByName(username)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
 
-	data := utils.Marshal(person)
+	// it will no go error?
+	as, err := convertLocalUserToS2SActivityStream(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+
+	// data := utils.Marshal(person)
+	data, err := json.Marshal(as)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 
 	w.Header().Set("Content-Type", "application/activity+json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)

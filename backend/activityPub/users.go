@@ -5,11 +5,88 @@ import (
 	"log"
 
 	"github.com/hana-ame/minmus/backend/db"
+	"github.com/hana-ame/minmus/backend/utils"
 )
 
 // TODO: connect to db for data
 func GetPerson(username string) map[string]any {
 	return dummyPerson(username)
+}
+
+func getLocalUserByName(username string) (*db.User, error) {
+	user := &db.User{
+		Username: username,
+	}
+	_, err := db.QueryUser(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func convertLocalUserToS2SActivityStream(user *db.User) (map[string]any, error) {
+	if user == nil {
+		return nil, fmt.Errorf("user is nil")
+	}
+	username := user.Username
+	if !utils.IsValidUsername(username) {
+		return nil, fmt.Errorf("not valid username")
+	}
+
+	id := fmt.Sprintf("https://%s/users/%s", Domain, username)
+	sharedInbox := fmt.Sprintf("https://%s/inbox", Domain)
+	// pubKeyID =
+	preferredUsername := username
+	var name any = user.Name
+	if name == "" {
+		name = nil
+	}
+	var summary any = user.Summary
+	if summary == "" {
+		summary = nil
+	}
+	var icon any = user.Icon
+	if icon == "" {
+		icon = nil
+	}
+	var image any = user.Image
+	if image == "" {
+		image = nil
+	}
+	publicKeyPem := user.PublicKeyPem
+	manuallyApprovesFollowers := user.ManuallyApprovesFollowers
+
+	as := make(map[string]any, 0)
+	as["@context"] = []string{"https://www.w3.org/ns/activitystreams", "https://w3id.org/security/v1"}
+	as["type"] = "Person"
+	as["id"] = id
+	as["inbox"] = id + "/inbox"
+	as["outbox"] = id + "/outbox"
+	as["followers"] = id + "/followers"
+	as["following"] = id + "/following"
+	as["featured"] = id + "/collections/featured"
+	as["sharedInbox"] = sharedInbox
+	as["endpoints"] = map[string]any{
+		"sharedInbox": sharedInbox,
+	}
+
+	as["url"] = getURL(Domain, username)
+	// dummy
+	as["preferredUsername"] = preferredUsername
+	as["name"] = name
+	as["summary"] = summary
+	as["icon"] = icon
+	as["image"] = image
+	as["tag"] = []string{}
+	as["manuallyApprovesFollowers"] = manuallyApprovesFollowers
+	as["publicKey"] = map[string]any{
+		"id":           id + "#main-key",
+		"type":         "Key",
+		"owner":        id,
+		"publicKeyPem": publicKeyPem,
+	}
+
+	return as, nil
 }
 
 func dummyPerson(username string) map[string]any {
