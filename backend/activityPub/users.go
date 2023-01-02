@@ -12,12 +12,27 @@ import (
 	"github.com/hana-ame/minmus/backend/webfinger"
 )
 
-// TODO: connect to db for data
-func GetPerson(username string) map[string]any {
-	return dummyPerson(username)
+func getUserByName(username string) (*db.User, error) {
+	user, err := getLocalUserByName(username)
+	if err == nil {
+		return user, nil
+	}
+	user, err = getRemoteUserByName(username)
+	if err == nil {
+		return user, nil
+	}
+	return nil, err
 }
 
 func getLocalUserByName(username string) (*db.User, error) {
+	if !utils.IsValidUsername(username) {
+		arr := strings.Split(username, "@")
+		if arr[len(arr)-1] == Domain {
+			username = arr[0]
+		} else {
+			return nil, fmt.Errorf("invalid username: %s", username)
+		}
+	}
 	user := &db.User{
 		Username: username,
 	}
