@@ -3,53 +3,16 @@ package activityPub
 import (
 	"fmt"
 	"log"
-	"net/http"
-	"strings"
 
-	"github.com/gorilla/mux"
 	"github.com/hana-ame/minmus/backend/db"
-	"github.com/hana-ame/minmus/backend/utils"
 )
 
-// /users/{username}/
-// /users/{username}
-func Users(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("???")
-	vars := mux.Vars(r)
-	username, ok := vars["username"]
-	if !ok {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-	// fmt.Println("path", username, ok)
-
-	// fmt.Println(r.Header["Accept"])
-
-	// if accept not match return 302
-	// if accept := r.Header.Get("Accept"); accept != "application/activity+json" && accept != "application/ld+json" {
-	if accept := r.Header.Get("Accept"); strings.HasPrefix(accept, "application/activity+json") && strings.HasPrefix(accept, "application/ld+json") {
-		http.Redirect(w, r, fmt.Sprintf("https://%s/@%s", Domain, username), http.StatusFound)
-	}
-
-	// get user (type Person)
-	person := GetPerson(username)
-	if person == nil {
-		return
-	}
-
-	data := utils.Marshal(person)
-
-	w.Header().Set("Content-Type", "application/activity+json; charset=utf-8")
-	w.WriteHeader(http.StatusOK)
-	w.Write(data)
-}
-
 // TODO: connect to db for data
-func GetPerson(username string) activityStream {
+func GetPerson(username string) map[string]any {
 	return dummyPerson(username)
 }
 
-func dummyPerson(username string) activityStream {
+func dummyPerson(username string) map[string]any {
 	// user := &db.User{
 	// 	Username: "dummy",
 	// }
@@ -58,7 +21,7 @@ func dummyPerson(username string) activityStream {
 	// 	log.Fatal(err)
 	// }
 
-	as := make(activityStream, 0)
+	as := make(map[string]any, 0)
 	as["@context"] = []string{"https://www.w3.org/ns/activitystreams", "https://w3id.org/security/v1"}
 	as["type"] = "Person"
 	as["id"] = getID(Domain, username)
@@ -68,7 +31,7 @@ func dummyPerson(username string) activityStream {
 	as["following"] = getFollowing(Domain, username)
 	as["featured"] = getFeatured(Domain, username)
 	as["sharedInbox"] = getSharedInbox(Domain)
-	as["endpoints"] = activityStream{
+	as["endpoints"] = map[string]any{
 		"sharedInbox": getSharedInbox(Domain),
 	}
 
@@ -111,7 +74,7 @@ func getSharedInbox(domain string) string {
 func getURL(domain string, username string) string {
 	return fmt.Sprintf("https://%s/@%s", Domain, username)
 }
-func getPublicKey(domain string, username string) activityStream {
+func getPublicKey(domain string, username string) map[string]any {
 
 	user := &db.User{
 		Username: "dummy",
@@ -121,7 +84,7 @@ func getPublicKey(domain string, username string) activityStream {
 		log.Fatal(err)
 	}
 
-	as := make(activityStream, 0)
+	as := make(map[string]any, 0)
 
 	as["id"] = getID(domain, username) + "#main-key"
 	as["type"] = "Key"

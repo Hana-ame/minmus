@@ -11,27 +11,27 @@ type User struct {
 	// me / me@other.site
 	Username string `gorm:"primaryKey"`
 	//
-	Email string
+	Email string `gorm:"type:varchar(256)"`
 	// sha256 hashed password
-	PasswordHash string
+	PasswordHash string `gorm:"type:char(64)"`
 	// public key
-	PublicKeyPem string
+	PublicKeyPem string `gorm:"type:varchar(2048)"`
 	// private key
-	PrivateKeyPem string
+	PrivateKeyPem string `gorm:"type:varchar(2048)"`
 
 	// user infos
 	// prefered name
-	PreferredUsername string
+	PreferredUsername string `gorm:"type:varchar(24)"`
 	// display name
-	Name string
+	Name string `gorm:"type:varchar(24)"`
 	// summary
-	Summary string
+	Summary string `gorm:"type:text"`
 	// URL to pic
-	Icon string
+	Icon string `gorm:"type:varchar(512)"`
 	// URL to pic
-	Image string
+	Image string `gorm:"type:varchar(512)"`
 	// Marshaled json string
-	TagString string
+	TagString string `gorm:"type:varchar(512)"`
 
 	// settings
 	ManuallyApprovesFollowers bool

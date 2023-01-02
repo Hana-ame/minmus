@@ -40,7 +40,7 @@ func getPublicKeyById(pubKeyId string) (*rsa.PublicKey, error) {
 		return nil, err
 	}
 
-	var as activityStream
+	var as map[string]any
 	json.NewDecoder(r.Body).Decode(&as)
 
 	// fmt.Println(as)

@@ -28,12 +28,22 @@ func main() {
 	color.Blue("starting")
 	// activityPub.Main()
 
+	// router
 	r := mux.NewRouter()
+	// for not found
 	r.NotFoundHandler = http.HandlerFunc(wrapper(MyCustom404Handler))
-
+	// webfinger
 	r.HandleFunc(webfinger.WebFingerPath, wrapper(webfinger.Controller))
-
-	activityPub.RegisterHandlerFunc(r)
+	// activityPub
+	// Users
+	r.HandleFunc("/users/{username}", wrapper(activityPub.Users))
+	r.HandleFunc("/users/{username}/", wrapper(activityPub.Users))
+	// Inbox
+	r.HandleFunc("/users/{username}/inbox", wrapper(activityPub.Inbox))
+	r.HandleFunc("/users/{username}/inbox/", wrapper(activityPub.Inbox))
+	// SharedInbox
+	r.HandleFunc("/inbox", wrapper(activityPub.SharedInbox))
+	r.HandleFunc("/inbox/", wrapper(activityPub.SharedInbox))
 
 	r.HandleFunc("/test/", wrapper(utils.Test))
 	// r.HandleFunc("/users/{username}/inbox", wrapper(utils.Test))
