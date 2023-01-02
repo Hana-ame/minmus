@@ -1,0 +1,3 @@
+package activityPub
+
+func Follow()
