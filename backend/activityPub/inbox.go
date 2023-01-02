@@ -2,6 +2,7 @@ package activityPub
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/fatih/color"
@@ -11,7 +12,17 @@ import (
 // /{username}/inbox
 // /{username}/inbox/
 func Inbox(w http.ResponseWriter, r *http.Request) {
+	var err error
 	color.Green(fmt.Sprint(r))
+	text, err := io.ReadAll(r.Body)
+	if err != nil {
+		color.Red(err.Error())
+		return
+	}
+	color.Yellow(string(text))
+	return
+	// debug
+
 	r.Host = Domain
 
 	vars := mux.Vars(r)
@@ -21,8 +32,11 @@ func Inbox(w http.ResponseWriter, r *http.Request) {
 	}
 	_ = username
 
-	err := verify(r)
-	fmt.Println(err)
+	err = verify(r)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 	// pk, err := utils.ReadKeyFromFile("privatekey.pem")
 	// if err != nil {
 	// 	fmt.Println(err.Error())
