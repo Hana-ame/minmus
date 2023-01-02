@@ -8,7 +8,7 @@ import (
 )
 
 func TestUser(t *testing.T) {
-	var as activityStream
+	var as map[string]any
 	var data []byte
 	for i := 0; i < 10_000; i++ {
 		as = dummyPerson("username111")

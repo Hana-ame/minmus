@@ -14,14 +14,23 @@ type User struct {
 	Email string `gorm:"type:varchar(256)"`
 	// sha256 hashed password
 	PasswordHash string `gorm:"type:char(64)"`
-	// public key
-	PublicKeyPem string `gorm:"type:varchar(2048)"`
 	// private key
 	PrivateKeyPem string `gorm:"type:varchar(2048)"`
+	// endpoints
+	Inbox       string `gorm:"type:varchar(512)"`
+	Outbox      string `gorm:"type:varchar(512)"`
+	Followers   string `gorm:"type:varchar(512)"`
+	Following   string `gorm:"type:varchar(512)"`
+	Featured    string `gorm:"type:varchar(512)"`
+	SharedInbox string `gorm:"type:varchar(512)"`
+
+	// public key
+	PublicKeyID  string `gorm:"type:varchar(512)"`
+	PublicKeyPem string `gorm:"type:varchar(2048)"`
 
 	// user infos
-	// prefered name
-	PreferredUsername string `gorm:"type:varchar(24)"`
+	// prefered name, raw
+	PreferredUsername string `gorm:"type:varchar(128)"`
 	// display name
 	Name string `gorm:"type:varchar(24)"`
 	// summary
