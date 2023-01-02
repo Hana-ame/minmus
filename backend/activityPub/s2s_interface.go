@@ -22,8 +22,8 @@ func Users(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check the header, if not s2s request, redirect to normal profile
-	if accept := r.Header.Get("Accept"); strings.HasPrefix(accept, "application/activity+json") && strings.HasPrefix(accept, "application/ld+json") {
-		http.Redirect(w, r, fmt.Sprintf("https://%s/@%s", Domain, username), http.StatusFound)
+	if accept := r.Header.Get("Accept"); !(strings.HasPrefix(accept, "application/activity+json") || strings.HasPrefix(accept, "application/ld+json")) {
+		http.Redirect(w, r, fmt.Sprintf("/@%s", username), http.StatusFound)
 	}
 
 	// get user (type *db.User)
@@ -72,7 +72,8 @@ func Inbox(w http.ResponseWriter, r *http.Request) {
 	// httpsig
 	err = verify(r)
 	if err != nil {
-		fmt.Println(err)
+		color.Red(err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 	// verify success
