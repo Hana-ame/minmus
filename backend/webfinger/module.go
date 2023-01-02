@@ -4,14 +4,20 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/hana-ame/minmus/backend/db"
 	"github.com/hana-ame/minmus/backend/utils"
 )
 
 // this username shall not contain @[domain]
-func isExist(username string) bool {
-	// TODO: should connect to database to check if username exists
+func isExist(username string) (bool, error) {
+	user := &db.User{Username: username}
 
-	return true
+	ok, err := db.CheckUser(user)
+	if err != nil {
+		return false, err
+	}
+
+	return ok, nil
 }
 
 func getResource(username string) *Resource {
@@ -48,7 +54,7 @@ func getResource(username string) *Resource {
 	// return mockGet(username)
 }
 
-// for test
+// for test, not used
 func mockGet(username string) *Resource {
 	data := utils.Get("https://misskey.meromeromeiro.top/.well-known/webfinger?resource=acct:" + username + "@misskey.meromeromeiro.top")
 	if data == nil {

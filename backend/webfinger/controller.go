@@ -1,24 +1,13 @@
 package webfinger
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 	"strings"
-
-	"github.com/hana-ame/minmus/backend/utils"
 )
 
 func Controller(w http.ResponseWriter, r *http.Request) {
-	debug := false
-
-	if debug {
-		fmt.Println(r.URL.Path)
-	}
-
 	query := r.URL.Query()
-	if debug {
-		fmt.Println(query)
-	}
 
 	// 400 if the form mismatch
 	if query["resource"] == nil {
@@ -26,9 +15,6 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	resources := query["resource"]
-	if debug {
-		fmt.Println(resources)
-	}
 
 	// 400 if the form mismatch
 	if len(resources) != 1 || !strings.HasPrefix(resources[0], "acct:") {
@@ -44,7 +30,7 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// 404 if username not exist
-	if !isExist(username) {
+	if ok, _ := isExist(username); !ok {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
@@ -57,7 +43,11 @@ func Controller(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := utils.Marshal(*resource)
+	data, err := json.Marshal(resource)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	// return
 	w.Header().Set("content-type", "application/jrd+json")
