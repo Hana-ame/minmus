@@ -1,0 +1,5 @@
+package webcore
+
+func Sign() {
+
+}

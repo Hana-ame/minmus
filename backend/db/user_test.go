@@ -15,7 +15,7 @@ func TestUserAll(t *testing.T) {
 
 	// create user
 	user = &User{
-		ID:           utils.GetTS(),
+		ID:           "utils.GetTS()",
 		CreatedAt:    time.Now(),
 		Username:     "username123",
 		Email:        "sb@a.b",
@@ -179,7 +179,7 @@ func TestCreate(t *testing.T) {
 	fmt.Println(publicKeyPem)
 
 	user := &User{
-		ID:           utils.GetTS(),
+		ID:           "utils.GetTS()",
 		CreatedAt:    time.Now(),
 		Username:     "dummy",
 		Email:        "sb@a.b",

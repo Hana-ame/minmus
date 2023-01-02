@@ -1,6 +1,9 @@
 package utils
 
-import "crypto/sha256"
+import (
+	"crypto/sha256"
+	"fmt"
+)
 
 func Sha256(data []byte) []byte {
 	h := sha256.New()
@@ -9,7 +12,7 @@ func Sha256(data []byte) []byte {
 }
 
 func Sha256String(data string) string {
-	return string(Sha256([]byte(data)))
+	return fmt.Sprintf("%x", Sha256([]byte(data)))
 }
 
 func Sha256StringSalt(data string, salt string) string {

@@ -5,18 +5,20 @@ import (
 )
 
 type User struct {
-	ID        int64
+	ID        string `gorm:"type:varchar(512)"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	// me / me@other.site
+	// me / me@other.site, this is primary key
 	Username string `gorm:"primaryKey"`
-	//
+
+	// local user only
 	Email string `gorm:"type:varchar(256)"`
 	// sha256 hashed password
 	PasswordHash string `gorm:"type:char(64)"`
 	// private key
 	PrivateKeyPem string `gorm:"type:varchar(2048)"`
-	// endpoints
+
+	// endpoints, remote user only
 	Inbox       string `gorm:"type:varchar(512)"`
 	Outbox      string `gorm:"type:varchar(512)"`
 	Followers   string `gorm:"type:varchar(512)"`
@@ -24,11 +26,11 @@ type User struct {
 	Featured    string `gorm:"type:varchar(512)"`
 	SharedInbox string `gorm:"type:varchar(512)"`
 
-	// public key
+	// public key, all
 	PublicKeyID  string `gorm:"type:varchar(512)"`
 	PublicKeyPem string `gorm:"type:varchar(2048)"`
 
-	// user infos
+	// user infos, all
 	// prefered name, raw
 	PreferredUsername string `gorm:"type:varchar(128)"`
 	// display name
@@ -42,7 +44,7 @@ type User struct {
 	// Marshaled json string
 	TagString string `gorm:"type:varchar(512)"`
 
-	// settings
+	// settings, all
 	ManuallyApprovesFollowers bool
 }
 
